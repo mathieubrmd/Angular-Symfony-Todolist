@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Angular Todolist</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Loading some styles for angular material and sweetalert2 -->
+  <link rel="stylesheet" href="/node_modules/angular-material/angular-material.css" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <link rel="stylesheet" href="/node_modules/ng-material-datetimepicker/dist/material-datetimepicker.min.css" />
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+  <link rel="stylesheet" href="node_modules/sweetalert2/dist/sweetalert2.min.css">
+</head>
+
+<body ng-app="todoApp" ng-cloak layout="row">
+
+  <!-- addTodoController - displaying the addtodo form -->
+  <div ng-controller="addTodoController as addtodo" flex>
+    <br />
+    <md-card>
+      <md-card-content>
+        <form name="todoForm" novalidate>
+          <md-input-container class="md-block">
+            <label>Title</label>
+            <input required name="title" type="text" ng-model="addtodo.todo.title" />
+            <div ng-messages="todoForm.title.$error" ng-show="todoForm.title.$dirty && todoForm.title.$invalid">
+              <div ng-message="required">The title field is required</div>
+            </div>
+          </md-input-container>
+          <md-input-container class="md-block">
+            <label>Description</label>
+            <textarea required name="description" rows="1" type="text" ng-model="addtodo.todo.description"></textarea>
+            <div ng-messages="todoForm.description.$error" ng-show="todoForm.description.$dirty && todoForm.description.$invalid">
+              <div ng-message="required">The description field is required</div>
+            </div>
+          </md-input-container>
+          <md-input-container class="md-block">
+            <label>Select a due date</label>
+            <input required name="dueDate" mdc-datetime-picker="" date="true" time="true" type="text" short-time="false" minutes="true" format="YYYY-MM-DD HH:mm" ng-model="addtodo.todo.dueDate" class="md-input">
+            <div ng-messages="todoForm.dueDate.$error" ng-show="todoForm.dueDate.$dirty && todoForm.dueDate.$invalid">
+              <div ng-message="required">The due date field is required</div>
+            </div>
+          </md-input-container>
+          <md-input-container class="md-block">
+            <md-checkbox class="md-primary" ng-model="addtodo.todo.isDone">Is Done ?</md-checkbox>
+          </md-input-container>
+      </md-card-content>
+      <md-button class="md-raised md-primary" type="button" ng-click="addtodo.saveTodo()">Save</md-button>
+      </form>
+    </md-card>
+
+  </div>
+
+  <!-- todoListController - Displaying the todos -->
+  <div ng-controller="todoListController as todolist" flex="70">
+    <br />
+    <md-card ng-show="todolist.todos.length > 0">
+      <md-list style="padding:0%">
+        <div ng-repeat="todo in todolist.todos track by $index">
+          <md-list-item class="md-3-line disable-md-clickable">
+            <md-checkbox class="md-primary" ng-change="todolist.updateTodo(todo)" ng-model="todo.isDone"></md-checkbox>
+            <div class="md-list-item-text">
+              <h3>{{ todo.title }}<h3>
+              <h4>{{ todo.description }}</h4>
+              <p>Due date: {{ todo.dueDate | date: 'yyyy-MM-dd HH:mm:ss' }}</p>
+            </div>
+            <md-button class="md-raised md-secondary md-warn" ng-click="todolist.deleteTodo(todo)">
+              delete
+            </md-button>
+          </md-list-item>
+          <md-divider></md-divider>
+        </div>
+      </md-list>
+    </md-card>
+  </div>
+
+  <!-- Loading angular and angular material dependencies -->
+  <script type="text/javascript" src="./node_modules/angular/angular.js"></script>
+  <script src="/node_modules/angular-aria/angular-aria.js"></script>
+  <script src="/node_modules/angular-animate/angular-animate.js"></script>
+  <script src="/node_modules/angular-material/angular-material.js"></script>
+  <script src="/node_modules/moment/min/moment-with-locales.min.js"></script>
+  <script src="./node_modules/ng-material-datetimepicker/dist/angular-material-datetimepicker.min.js"></script>
+
+  <!-- Loading the sweetalert2 library -->
+  <script src="./node_modules/sweetalert2/dist/sweetalert2.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.js"></script>
+
+  <!-- Loading the app js files -->
+  <script type="text/javascript" src="./app.js"></script>
+  <script type="text/javascript" src="./app/controllers/todolistController.js"></script>
+  <script type="text/javascript" src="./app/controllers/addTodoController.js"></script>
+  <script type="text/javascript" src="./app/services/todoService.js"></script>
+</body>
+
+</html>
